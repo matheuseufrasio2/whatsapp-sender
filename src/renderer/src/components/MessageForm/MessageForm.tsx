@@ -1,10 +1,15 @@
 import { ButtonStyled, FormContainer, MessageFormContainer, Variables } from './styles'
 
 import { Button, Input } from 'antd'
+import { ipcRenderer } from 'electron'
 
 const variables = ['PRIMEIRONOME', 'SOBRENOME', 'TELEFONE']
 
 export function MessageForm(): JSX.Element {
+  const handleAutomationClick = (): void => {
+    ipcRenderer.send('perform-automation')
+  }
+
   return (
     <MessageFormContainer>
       <FormContainer>
@@ -14,7 +19,12 @@ export function MessageForm(): JSX.Element {
         />
         <Variables>
           {variables.map((variable) => (
-            <Button type="dashed" style={{ width: 150 }} key={variable}>
+            <Button
+              onClick={handleAutomationClick}
+              type="dashed"
+              style={{ width: 150 }}
+              key={variable}
+            >
               {variable}
             </Button>
           ))}
