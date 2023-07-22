@@ -1,13 +1,21 @@
+import { useState } from 'react'
 import { ButtonStyled, FormContainer, MessageFormContainer, Variables } from './styles'
-
-import { Button, Input } from 'antd'
-import { ipcRenderer } from 'electron'
+import { Button, Input, Spin } from 'antd'
 
 const variables = ['PRIMEIRONOME', 'SOBRENOME', 'TELEFONE']
 
 export function MessageForm(): JSX.Element {
-  const handleAutomationClick = (): void => {
-    ipcRenderer.send('perform-automation')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleAutomationClick = async (): Promise<void> => {
+    setIsLoading(true)
+    try {
+      await window.api.createGlobalDriver()
+      await window.api.openWhatsapp()
+    } catch {
+      console.log('error')
+    }
+    setIsLoading(false)
   }
 
   return (
@@ -19,18 +27,15 @@ export function MessageForm(): JSX.Element {
         />
         <Variables>
           {variables.map((variable) => (
-            <Button
-              onClick={handleAutomationClick}
-              type="dashed"
-              style={{ width: 150 }}
-              key={variable}
-            >
+            <Button type="dashed" style={{ width: 150 }} key={variable}>
               {variable}
             </Button>
           ))}
         </Variables>
       </FormContainer>
-      <ButtonStyled>Enviar mensagem</ButtonStyled>
+      <ButtonStyled onClick={handleAutomationClick}>
+        {isLoading ? <Spin /> : 'Enviar mensagem'}
+      </ButtonStyled>
     </MessageFormContainer>
   )
 }
