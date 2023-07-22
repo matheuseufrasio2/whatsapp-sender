@@ -1,10 +1,10 @@
 import { AppContainer } from './App.styled'
-import { MessageForm } from './components/MessageForm/MessageForm'
+import { AppRoutes } from './routes'
 
 function App(): JSX.Element {
   return (
     <AppContainer>
-      <MessageForm />
+      <AppRoutes />
     </AppContainer>
   )
 }
