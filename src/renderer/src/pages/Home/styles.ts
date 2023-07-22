@@ -5,7 +5,7 @@ export const HomeContainer = styled.div`
   height: 100vh;
   background: ${(props) => props.theme.backgrounds.dark};
   overflow: hidden;
-  border: 1px solid ${(props) => props.theme.colors.purpleDark};
+  /* border: 1px solid ${(props) => props.theme.colors.purpleDark}; */
   display: flex;
   flex-direction: column;
 `

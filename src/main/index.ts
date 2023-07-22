@@ -1,13 +1,18 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, Menu } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+
 import icon from '../../resources/icon.png?asset'
+import { initializeWindowManager } from './windowManager'
+import { getWindowBounds, setWindowBounds } from '../utils/windowBoundsController'
 
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
+    ...getWindowBounds(),
     minWidth: 900,
     minHeight: 670,
+    frame: false,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -20,13 +25,50 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
-    mainWindow.maximize()
+    // mainWindow.maximize()
+
+    initializeWindowManager(mainWindow)
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
+
+  mainWindow.on('close', () => {
+    setWindowBounds(mainWindow?.getBounds())
+  })
+
+  const template: Electron.MenuItemConstructorOptions[] = [
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'New',
+          accelerator: 'CmdOrCtrl+N',
+          click: (): void => {
+            // Perform some action when the "New" menu item is clicked
+            // For example, open a new window
+            const newWindow = new BrowserWindow({ width: 800, height: 600 })
+            newWindow.loadURL('https://www.example.com')
+          }
+        },
+        { type: 'separator' },
+        {
+          label: 'Quit',
+          accelerator: 'CmdOrCtrl+Q',
+          click: (): void => {
+            // Quit the application when the "Quit" menu item is clicked
+            app.quit()
+          }
+        }
+      ]
+    }
+    // More menu items can be added here
+  ]
+
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.

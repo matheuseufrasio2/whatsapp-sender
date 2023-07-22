@@ -1,5 +1,5 @@
 import { Browser, Builder, By, Key, WebDriver, until } from 'selenium-webdriver'
-import { waitInSeconds } from '../helpers/waitInSeconds'
+import { waitInSeconds } from '../utils/waitInSeconds'
 import { clipboard } from 'electron'
 
 export type Api = typeof api

@@ -41,6 +41,14 @@ export function MessageForm(): JSX.Element {
       <ButtonStyled onClick={handleAutomationClick}>
         {isLoading ? <Spin /> : 'Enviar mensagem'}
       </ButtonStyled>
+      <Button
+        onClick={async (): Promise<void> => {
+          const currentWindow = await window.electron.ipcRenderer.invoke('handleWindowMinimize')
+          console.log(currentWindow)
+        }}
+      >
+        Teste
+      </Button>
     </MessageFormContainer>
   )
 }

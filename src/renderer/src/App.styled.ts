@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 
 export const AppContainer = styled.div`
-  height: 100vh;
   width: 100vw;
-
+  height: 100vh;
+  background: ${(props) => props.theme.backgrounds.dark};
+  overflow: hidden;
+  border: 1px solid ${(props) => props.theme.colors.purpleDark};
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
 `

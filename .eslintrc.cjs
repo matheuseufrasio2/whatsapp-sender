@@ -34,7 +34,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.js', 'GlobalStyles.ts', 'styles.ts'],
+      files: ['*.js', 'GlobalStyles.ts', '*styled.ts', 'styles.ts'],
       rules: {
         '@typescript-eslint/explicit-function-return-type': 'off'
       }
